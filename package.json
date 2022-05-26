@@ -1,0 +1,19 @@
+{
+  "name": "marvel-api-client",
+  "version": "1.0.0",
+  "description": "marvel api client",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crankyinmv/Marvel-API-Client.git"
+  },
+  "author": "Mike Gollub",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crankyinmv/Marvel-API-Client/issues"
+  },
+  "homepage": "https://github.com/crankyinmv/Marvel-API-Client#readme"
+}
