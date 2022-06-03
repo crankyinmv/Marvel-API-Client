@@ -6,7 +6,7 @@ $(document).ready(function ()
 console.log('initializing ...');
 	let characterAPI = getCharacterAPI();
 	$('#gcb').click(()=>characterAPI.getCharacters(0, characterAPI.showCharacters));
-	$('#api_results').on('click', '.character-item', characterAPI.characterClick);
+	$('#chName').keypress(function(e){console.log(e);if(e.key === "Enter")characterAPI.getCharacters(0, characterAPI.showCharacters);});
 });
 
 // https://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript
@@ -24,6 +24,7 @@ const getCharacterAPI = function()
 {
 	const searchMode = function()
 	{
+		$('#chName').val('');
 		$('.search_group').css('display','block');
 		$('.wait_group').css('display', 'none');
 		$('#rc-progress').css('width', '0%');
@@ -37,6 +38,8 @@ const getCharacterAPI = function()
 		$('.search_group').css('display','none');
 		$('.wait_group').css('display', 'block');
 		$('#rc-progress').attr('aria-hidden', false);
+		$('#comics-list').off('change');
+		$('#character-summary > *').css('visibility','hidden');	
 	};
 
 	const getCharacters = function(off, cb=null)
@@ -86,16 +89,25 @@ const getCharacterAPI = function()
 	/* Click handler for selecting a listed character. */
 	const characterClick = function(e) 
 	{
+console.log('characterClick');
 elClicked = $(this);
 		e.preventDefault();	// no  bubbles allowed.
 console.log(e); 
 console.log($(this)); 
-console.log($(this).text());
-console.log($(this).html());
-	let index = $(this).attr('character-index')-'0';
+//console.log($(this).text());
+//console.log($(this).html());
+//let index = $(this).attr('character-index')-'0';
+		let index = $(this).val()-'0';
 console.log('index:', index);
 console.log('summary:',characterSummaries[index]);
 
+		showCharacterSummary(index);
+	};
+
+	const showCharacterSummary = function(index)
+	{
+		if(index >= characterSummaries.length)
+			return;
 		$('#character-summary > *').css('visibility','visible');
 		$('#character-thumbnail').attr('src', characterSummaries[index].thumb);
 		$('#character-name').html(characterSummaries[index].name);
@@ -127,19 +139,20 @@ console.log('summary:',characterSummaries[index]);
 		let api_results = $('#api_results');
 		if(response.data.offset === 0)
 		{
-			api_results.html(attr+'<br />');
+			api_results.html("<div class="+attr+"<br />");
 
 			/* Build an unordered list in api_result. */
-			api_results.append($("<ul id='comics-list'></ul>"));
+//			api_results.append($("<ul id='comics-list'></ul>"));
+			api_results.append($("<select class='form-select' aria-label='Matching Characters' id='comics-list' name='comics-list'></select>"));
 //console.log($('#comics-list').children());
+			$('#comics-list').change(characterClick);
 			characterSummaries = [];
 		}
 		let ind = response.data.offset;
 		for(let result of results)
-//			characters.push(`<li>${result.name}, comics:${result.comics.available}</li>`);
-//			characters.push(`<li class='character-item'>${result.name}<span class='character-index'>${characters.length+response.data.offset}</span></li>`);
 		{
-			characters.push(`<li class='character-item' character-index='${ind++}'>${result.name}</li>`);
+//			characters.push(`<li class='character-item' character-index='${ind++}'>${result.name}</li>`);
+			characters.push(`<option class='character-item' value='${ind++}'>${result.name}</option>`);
 			let summary = 
 			{
 				name:result.name, 
@@ -163,7 +176,10 @@ console.log('summary:',characterSummaries[index]);
 
 		/* Switch back to ready UI when done. */
 		if(cRead >= total)
+		{
+			showCharacterSummary(0);
 			setTimeout(searchMode, 1000);
+		}
 	};
 
 	return {getCharacters, showCharacters, characterClick};
