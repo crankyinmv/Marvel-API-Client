@@ -6,7 +6,7 @@ body {
 //  height: 100vh;
 //  width: 100vw;
   min-height: 100vh;
-  background-color: rgb(26, 26, 26);
+  background-color: rgb(50, 50, 50);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,19 +24,20 @@ body {
 //  overflow: hidden;
 }
 
-.container {background-color: green; }
+.container {//background-color: green; }
 .card {
-  height: 40rem;
-  width: 25rem;
-background-color:salmon;
+	height: 40rem;
+	width: 25rem;
+	background-color:#f7eac6;
+	margin-left:.5em;
+	margin-right:.5em;
 }
 #api_results
 {
 	min-width:250px;
 	min-height:500px;
-	background-color: yellow;
-	color:green;
-	overflow-y: scroll;
+//	background-color: yellow;
+//	color:green;
 	margin-bottom: 1em;
 }
 
@@ -49,10 +50,11 @@ background-color:salmon;
 }
 
 .character-item {cursor:pointer; margin-top:1px;}
-#api_results:first-child {margin-top:0px;}
+//#api_results:first-child {margin-top:0px;}
 .wait_group {display:none; min-height:1rem;}
 #rc-progress {width:0%;height:100%;}
 #character-summary > * {visibility:hidden;}
 #character-summary {flex-direction:column; align-content: space-between;}
 #character-thumbnail {margin-top: .5em; margin-bottom: .5em};
+#comics-list {overflow-y:hidden;}
 
